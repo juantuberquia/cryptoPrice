@@ -35,7 +35,7 @@ const Form = () => {
   // listado de critomonedas, segun api
   const [listCrytos, setListCryptos] = useState([]);
   // state del mensaje de error
-  const [error, setError] = useState();
+  const [error, setError] = useState(false);
   // custom hooks tipo de moneda
   const [typeCoin, SelectCoin] = useCoin("Elegi tu moneda", Coins);
 
@@ -56,20 +56,20 @@ const Form = () => {
     listCrytos
   );
 
-  console.log(stateCryto);
-  console.log(typeCoin);
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-  // validar form
-  // if (stateCryto.trim() === "" || typeCoin.trim() === "") {
-  //   setError(true);
-  //   return;
-  // } else {
-  //   setError(false);
-  // }
+    if (stateCryto.trim() === "" || typeCoin.trim() === "") {
+      setError(true);
+      return;
+    } else {
+      setError(false);
+    }
+  };
 
   return (
-    <form>
-      {/* <Error error={error} /> */}
+    <form onSubmit={handleSubmit}>
+      <Error error={error} message="Diligenciar los campos" />
       <SelectCoin />
       <SelectCriyto />
       <Botton type="submit" value="Calcular" />
