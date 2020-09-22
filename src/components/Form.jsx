@@ -23,7 +23,7 @@ const Botton = styled.input`
   }
 `;
 
-const Form = () => {
+const Form = ({ setCrypto, setCoin, setSpinner, status }) => {
   // menu monedas
   const Coins = [
     { codigo: "USD", nombre: "Dolar de EEUU" },
@@ -59,11 +59,19 @@ const Form = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // validar form
     if (stateCryto.trim() === "" || typeCoin.trim() === "") {
       setError(true);
       return;
     } else {
+      setCrypto(stateCryto);
+      setCoin(typeCoin);
       setError(false);
+      setSpinner(true);
+
+      setTimeout(() => {
+        setSpinner(false);
+      }, 1500);
     }
   };
 

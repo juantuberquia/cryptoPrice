@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import img from "./crypto.png";
 import Form from "./components/Form";
+import ShowData from "./components/ShowData";
+import Spinner from "./components/Spinner";
+import axios from "axios";
 
 const Container = styled.div`
   max-width: 900px;
@@ -40,6 +43,22 @@ const Heading = styled.h1`
 `;
 
 function App() {
+  const [coin, setCoin] = useState("");
+  const [crypto, setCrypto] = useState("");
+  const [getData, setGetData] = useState({});
+  const [spinner, setSpinner] = useState(false);
+
+  useEffect(() => {
+    const getData = async () => {
+      if (coin === "") return null;
+
+      const url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${crypto}&tsyms=${coin}`;
+      const res = await axios.get(url);
+      setGetData(res.data.DISPLAY[crypto][coin]);
+    };
+    getData();
+  }, [crypto, coin]);
+
   return (
     <Container>
       <div>
@@ -47,7 +66,9 @@ function App() {
       </div>
       <div>
         <Heading> Cotiza Criptomonedas</Heading>
-        <Form />
+        <Form setCoin={setCoin} setCrypto={setCrypto} setSpinner={setSpinner} />
+        <Spinner spinner={spinner} />
+        {spinner ? null : <ShowData getData={getData} />}
       </div>
     </Container>
   );
